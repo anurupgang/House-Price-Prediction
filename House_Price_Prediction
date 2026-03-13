@@ -1,0 +1,77 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "c0efd595-4f89-468f-a2a2-9f5fb25ac9e1",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "R2 Score: 0.6447797961787275\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "from sklearn.ensemble import GradientBoostingRegressor\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.metrics import r2_score\n",
+    "\n",
+    "# Load data\n",
+    "df = pd.read_csv(\"Housing.csv\")\n",
+    "\n",
+    "# One hot encoding\n",
+    "df = pd.get_dummies(df, drop_first=True)\n",
+    "\n",
+    "# Split\n",
+    "X = df.drop(\"price\", axis=1)\n",
+    "Y = df[\"price\"]\n",
+    "X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)\n",
+    "\n",
+    "# Gradient Boosting works better on small datasets\n",
+    "model = GradientBoostingRegressor(\n",
+    "    n_estimators=300,\n",
+    "    learning_rate=0.05,\n",
+    "    max_depth=4,\n",
+    "    random_state=42\n",
+    ")\n",
+    "model.fit(X_train, Y_train)\n",
+    "pred = model.predict(X_test)\n",
+    "print(\"R2 Score:\", r2_score(Y_test, pred))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9d89fa36-9b4d-4606-bc23-9aed9c00b3e1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:base]",
+   "language": "python",
+   "name": "conda-base-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
